@@ -1,5 +1,15 @@
 #!/bin/bash
 
+if [ $# -eq 0 ]
+ then
+        echo "USAGE: start_all_supervisor.sh file_name"
+        exit 1;
+ else
+        hostlist=$1
+        start_all
+        echo "start all finished!";
+fi
+
 start_all()
 {
  for host in `cat hostlist`
@@ -11,5 +21,3 @@ start_all()
  done
  return 0
 }
- start_all
- echo "start all finished!"
