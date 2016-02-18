@@ -1,5 +1,16 @@
 #!/bin/bash
 
+if [ $# -eq 0 ]
+ then
+        echo "USAGE: stop_all_supervisor file_name"
+        exit 1;
+ else
+        hostlist=$1
+        start_all
+        echo "start all finished!";
+fi
+
+
 stop_all()
 {
  for host in `cat hostlist`
