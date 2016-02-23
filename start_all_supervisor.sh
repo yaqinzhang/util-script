@@ -1,18 +1,8 @@
 #!/bin/bash
 
-if [ $# -eq 0 ]
- then
-        echo "USAGE: start_all_supervisor.sh file_name"
-        exit 1;
- else
-        hostlist=$1
-        start_all
-        echo "start all finished!";
-fi
-
 start_all()
 {
- for host in `cat hostlist`
+ for host in `cat $hostlist`
  do
         echo HOST $host
         ssh root@$host "rm -rf /opt/data/goldmine/storm/local-dir/*  /opt/data/goldmine/storm/logs/*" < /dev/null
@@ -21,3 +11,13 @@ start_all()
  done
  return 0
 }
+
+if [ $# -eq 0 ]
+ then
+        echo "USAGE: start_all_supervisor.sh file_name"
+        exit 1;
+ else
+        hostlist=$1
+        start_all
+        echo "start all finished!"
+fi
