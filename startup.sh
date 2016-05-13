@@ -4,7 +4,9 @@ JAVA_HOME=/usr/local/java/jdk/jdk1.7.0_79
 RUNNING_USER=caton
 APP_HOME=/opt/apps/caton/crash-upload/WEB-INF
 APP_MAINCLASS=com.sohu.video.server.JettyServer
-
+PORT=8085
+USER=caton
+CURRENT_USER=`echo $LOGNAME`
 CLASSPATH=$APP_HOME/classes
 for i in "$APP_HOME"/lib/*.jar; do
    CLASSPATH="$CLASSPATH":"$i"
@@ -30,7 +32,8 @@ start() {
       echo "================================"
    else
       echo -n "Starting $APP_MAINCLASS ..."
-      nohup $JAVA_HOME/bin/java $JAVA_OPTS -classpath $CLASSPATH $APP_MAINCLASS "8082" > /dev/null 1>&2 &
+      nohup $JAVA_HOME/bin/java $JAVA_OPTS -classpath $CLASSPATH $APP_MAINCLASS $PORT > /dev/null 1>&2 &
+      
       checkpid
       if [ $psid -ne 0 ]; then
          echo "(pid=$psid) [OK]"
@@ -86,6 +89,10 @@ info() {
    echo "****************************"
 }
 
+if [ $CURRENT_USER != $USER ]; then
+   echo "Current User is $CURRENT_USER, change to $USER"
+   exit 1
+fi      
 case "$1" in
   "start") start;;
    "stop") stop;;
@@ -94,5 +101,5 @@ case "$1" in
  "status") status;;
    "info") info;;
         *) echo "Usage: $0 {start|stop|status|info|restart}"
-          exit 1
+           exit 1;;
 esac
